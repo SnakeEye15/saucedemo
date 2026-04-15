@@ -1,5 +1,7 @@
 package base;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -10,6 +12,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import Utils.ConfigReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class BaseTest {
@@ -19,7 +22,9 @@ public class BaseTest {
 	
 	@BeforeMethod
 	@Parameters("browser")
-	public void initDriver(@Optional("chrome") String browser) {
+	public void initDriver(@Optional("") String browser) {
+		
+		browser=(browser!=null || !browser.isEmpty()) ? browser : ConfigReader.getBrowser();
 		
 		this.browser=browser; 
 		
@@ -52,6 +57,10 @@ public class BaseTest {
 		
 		driver.manage().deleteAllCookies();
 		driver.manage().window().maximize();
+		
+		driver.get(ConfigReader.getURL());
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(ConfigReader.getImplicitWait()));
 
 	}
 	
