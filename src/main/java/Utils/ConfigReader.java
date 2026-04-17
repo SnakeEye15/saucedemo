@@ -43,7 +43,7 @@ public class ConfigReader {
 	
 	//Getter method for URL
 	public static String getURL() {
-		String url=properties.getProperty("baseUrl");
+		String url=properties.getProperty("baseURL");
 		
 		if(url==null||url.isEmpty()) {
 			throw new RuntimeException("URL is not defined in config.properties file");

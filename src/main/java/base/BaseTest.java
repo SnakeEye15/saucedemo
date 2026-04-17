@@ -24,7 +24,7 @@ public class BaseTest {
 	@Parameters("browser")
 	public void initDriver(@Optional("") String browser) {
 		
-		browser=(browser!=null || !browser.isEmpty()) ? browser : ConfigReader.getBrowser();
+		browser=(browser!=null && !browser.isEmpty()) ? browser : ConfigReader.getBrowser();
 		
 		this.browser=browser; 
 		

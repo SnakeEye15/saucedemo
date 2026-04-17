@@ -21,6 +21,12 @@ public class LoginPage {
 	@FindBy(id="login-button")
 	private WebElement loginButton;
 	
+	@FindBy(xpath="//div[text()=\\\"Swag Labs\\\"]")
+	private WebElement dashboardTitle;
+	
+	@FindBy(xpath="//h3[@data-test='error']")
+	private WebElement errorMessage;
+	
 	//Constructor to initialize the elements
 	public LoginPage(WebDriver driver) {
 		this.driver=driver;
@@ -48,6 +54,16 @@ public class LoginPage {
 		enterUsername(user);
 		enterPassword(pass);
 		clickLoginButton();
+	}
+	
+	//get the dash board text
+	public String getDashboardText() {
+		return dashboardTitle.getText();
+	}
+	
+	//Is error message displayed
+	public boolean isErrorDisplayed() {
+		return errorMessage.isDisplayed();
 	}
 }
 
