@@ -52,16 +52,25 @@ public class ConfigReader {
 	}
 
 	
-	//Getter method for implicit wait
+		//Getter method for implicit wait
 	public static int getImplicitWait() {
 		return Integer.parseInt(properties.getProperty("implicitWait"));
 		
 	}
 	
-	//Getter method for Explicit wait
+		//Getter method for Explicit wait
 		public static int getExplicitWait() {
 			return Integer.parseInt(properties.getProperty("explicitWait"));
 			
 		}
+		
+		//Getter method for user-name
+		public static String getUsername() {
+			return properties.getProperty("username");
+				}
+		//Getter method for user-name
+		public static String getPassword() {
+			return properties.getProperty("password");
+				}
 	
 }

@@ -24,6 +24,8 @@ public class InventoryPage {
 	@FindBy(xpath="//select[@class='product_sort_container']")
 	private WebElement dropDownOption;
 	
+	@FindBy(xpath="//span[@class=\"shopping_cart_badge\"]")
+	private WebElement shoppingCartBadge;
 	
 	public InventoryPage(WebDriver driver){
 		this.driver=driver;
@@ -59,6 +61,11 @@ public class InventoryPage {
 		sel.selectByVisibleText(option);
 	}
 	
+	
+	//Method to get the Shopping cart count
+	public String getCartCount() {
+		return shoppingCartBadge.getText();
+	}
 	
 
 }
