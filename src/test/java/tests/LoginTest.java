@@ -13,7 +13,7 @@ public class LoginTest extends BaseTest{
 	
 	@Test(dataProvider="loginData")
 	public void validateLogin(String user, String pass, String type) {
-		LoginPage login=new LoginPage(driver);
+		LoginPage login=new LoginPage(getDriver());
 		login.loginUser(user, pass);
 		
 		if(type.equals("valid")) {
