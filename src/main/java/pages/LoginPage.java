@@ -3,13 +3,11 @@
 
 package pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
-	private WebDriver driver;
+
+public class LoginPage extends BasePage {
 	
 	@FindBy(id="user-name")
 	private WebElement usernameField;
@@ -27,42 +25,42 @@ public class LoginPage {
 	private WebElement errorMessage;
 	
 	//Constructor to initialize the elements
-	public LoginPage(WebDriver driver) {
-		this.driver=driver;
-		PageFactory.initElements(driver, this);
+	public LoginPage() {
+		super();
 		
 	}
 	
 	//public method for User name
 	public void enterUsername(String username) {
-		usernameField.sendKeys(username);
+		waitOn().waitForElementClickable(usernameField).sendKeys(username);
 	}
 	
 	//public method for password
 	public void enterPassword(String password) {
-		passwordFiled.sendKeys(password);
+		waitOn().waitForElementClickable(passwordFiled).sendKeys(password);
 	}
 
 	//public method to click on login option
 	public void clickLoginButton() {
-		loginButton.click();
+		waitOn().waitForElementClickable(loginButton).click();
 	}
 	
 	//Complete End to End method for login functionality
-	public void loginUser(String user,String pass) {
+	public InventoryPage loginUser(String user,String pass) {
 		enterUsername(user);
 		enterPassword(pass);
 		clickLoginButton();
+		return new InventoryPage();
 	}
 	
 	//get the dash board text
 	public String getDashboardText() {
-		return dashboardTitle.getText();
+		return waitOn().waitForElementVisible(dashboardTitle).getText();
 	}
 	
 	//Is error message displayed
 	public boolean isErrorDisplayed() {
-		return errorMessage.isDisplayed();
+		return waitOn().waitForElementVisible(errorMessage).isDisplayed();
 	}
 }
 

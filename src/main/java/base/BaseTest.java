@@ -21,6 +21,7 @@ import com.aventstack.extentreports.ExtentTest;
 
 import Utils.ConfigReader;
 import Utils.ExtentManager;
+import Utils.WaitUtils;
 import io.github.bonigarcia.wdm.WebDriverManager;
 public class BaseTest {
 	
@@ -29,6 +30,8 @@ public class BaseTest {
 	
 	protected static ExtentReports extent;
     protected static ThreadLocal<ExtentTest> test = new ThreadLocal<>();
+    protected static ThreadLocal<WaitUtils> wait = new ThreadLocal<>(); // NEW: ThreadLocal for Wait
+    
     
     
     @BeforeSuite
@@ -74,6 +77,7 @@ public class BaseTest {
 	
 		}
 		
+		wait.set(new WaitUtils(driver.get(), ConfigReader.getExplicitWait()));
 		driver.get().manage().deleteAllCookies();
 		driver.get().manage().window().maximize();
 		
@@ -88,6 +92,11 @@ public class BaseTest {
 	public String getBrowser() {
 		return browser;
 	}
+	
+	// NEW: Getter for WaitUtils
+    public static WaitUtils getWait() {
+        return wait.get();
+    }
 	
 	//getter method for WebDriver
 	public static WebDriver getDriver() {
@@ -110,6 +119,7 @@ public class BaseTest {
         if (driver != null) {
         	getDriver().quit();
             driver.remove();
+            wait.remove();
         }
         
         // Remove the thread-local instance to prevent memory leaks

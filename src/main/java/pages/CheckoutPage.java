@@ -1,21 +1,15 @@
 package pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 //Build CheckoutPage.java: fillShippingInfo(), clickContinue(), getOrderSummary()
 
 
-public class CheckoutPage {
+public class CheckoutPage extends BasePage{
 	
-	private WebDriver driver;
-	
-	public CheckoutPage(WebDriver driver) {
-		this.driver=driver;
-		PageFactory.initElements(driver, this);
-
+	public CheckoutPage() {
+		super();
 	}
 	
 	@FindBy(id="first-name")
@@ -54,16 +48,20 @@ public class CheckoutPage {
 	@FindBy(xpath="//div[@class='summary_info']/div[@data-test='total-label']")
 	private WebElement totalInfo;
 	
-	public CheckoutPage fillShippingInfo(String firstName, String LastName, String zipcode) {
-		firstNameLoc.sendKeys(firstName);
-		lastNameLoc.sendKeys(LastName);
-		zipCode.sendKeys(zipcode);
-		return this;
-	}
 	
-	public void clickContinue() {
-		continueOption.click();
-	}
+	// Step 1: Fill Info
+    public CheckoutPage fillShippingInfo(String firstName, String lastName, String zipcode) {
+        waitOn().waitForElementVisible(firstNameLoc).sendKeys(firstName);
+        waitOn().waitForElementVisible(lastNameLoc).sendKeys(lastName);
+        waitOn().waitForElementVisible(zipCode).sendKeys(zipcode);
+        return this; 
+    }
+
+    // Step 2: Transition to Overview
+    public CheckoutPage clickContinue() {
+        waitOn().waitForElementClickable(continueOption).click();
+        return this; // Crucial for Fluent Chaining
+    }
 	
 	public String getOrderSummary() {		
 		return new StringBuilder()
@@ -74,6 +72,8 @@ public class CheckoutPage {
 	            .append(totalInfo.getText())
 	            .toString();	
 	}
+	
+	
 	
 	
 	

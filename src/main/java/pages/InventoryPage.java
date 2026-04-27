@@ -4,19 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+
+import base.BaseTest;
 
 //Create InventoryPage.java. Add locators and methods: getProductNames(), addProductToCart(String name), 
 //getSortDropdown(), selectSortOption(String option)
 
 
-public class InventoryPage {
-	
-	private WebDriver driver;
+public class InventoryPage extends BasePage{
 	
 	@FindBy(xpath="//div[@class='inventory_item_name ']")
 	private List<WebElement> allInventoryItems;
@@ -27,30 +25,38 @@ public class InventoryPage {
 	@FindBy(xpath="//span[@class=\"shopping_cart_badge\"]")
 	private WebElement shoppingCartBadge;
 	
-	public InventoryPage(WebDriver driver){
-		this.driver=driver;
-		
-		PageFactory.initElements(driver, this);
+	@FindBy(xpath="//a[@class='shopping_cart_link']")
+	private WebElement shoppingcartOption;
+	
+	
+	public InventoryPage(){
+		super();
 	}
 	
 	//method to return all product available
 	public List<String> getProductNames(){
 		List<String> product=new ArrayList<>();
 		
+		
 		for(WebElement element:allInventoryItems) {
+			waitOn().waitForElementVisible(element);
 			product.add(element.getText());
 		}
 		return product;	
 	}
 	
 	//Method to add product to cart
-	public void addProductToCart(String name) {
-		String path="//div[text()='" + name + "']/ancestor::div[@class='inventory_item_description']//button";
-		driver.findElement(By.xpath(path)).click();
+	public InventoryPage addProductToCart(String name) {
+		// Always get driver from BaseTest to ensure thread-safety
+		String xpath = String.format("//div[text()='%s']/ancestor::div[@class='inventory_item_description']//button", name);
+		WebElement btn = BaseTest.getDriver().findElement(By.xpath(xpath));
+		waitOn().waitForElementClickable(btn).click();
+		return this; 
 	}
 	
 	//Method to get the DropDown Option
 	public WebElement getSortDropdown() {
+		waitOn().waitForElementVisible(dropDownOption);
 		return dropDownOption;
 	}
 	
@@ -64,7 +70,15 @@ public class InventoryPage {
 	
 	//Method to get the Shopping cart count
 	public String getCartCount() {
+		waitOn().waitForElementVisible(shoppingCartBadge);
 		return shoppingCartBadge.getText();
+	}
+	
+	//Method to click on shopping cart 
+	public CartPage clickOnCart() {
+		waitOn().waitForElementClickable(shoppingcartOption);
+		shoppingcartOption.click();
+		return new CartPage(); // Flow: Inventory -> Cart
 	}
 	
 

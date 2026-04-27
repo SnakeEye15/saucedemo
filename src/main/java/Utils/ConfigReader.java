@@ -72,5 +72,19 @@ public class ConfigReader {
 		public static String getPassword() {
 			return properties.getProperty("password");
 				}
+		
+		//Getter method for first name
+		public static String getFirstName() {
+			return properties.getProperty("firstName");
+		}
 	
+		//Getter Method for last name
+		public static String getLastName() {
+			return properties.getProperty("lastName");
+		}
+		
+		//Getter Method for zip Code
+		public static String getZipCode() {
+			return properties.getProperty("zipCode");
+		}
 }

@@ -20,7 +20,7 @@ public class EndToEndTest extends BaseTest{
 	public void endToEndTest() {
 		//To login into application 
 		try {
-		LoginPage login=new LoginPage(getDriver());
+		LoginPage login=new LoginPage();
 		login.loginUser(ConfigReader.getUsername(), ConfigReader.getPassword());
 		
 		
@@ -28,7 +28,7 @@ public class EndToEndTest extends BaseTest{
 		throw new RuntimeException("Login Failed... due to "+e.getMessage());
 	}
 		
-		InventoryPage inventory = new InventoryPage(getDriver());
+		InventoryPage inventory = new InventoryPage();
 		List<String> products=inventory.getProductNames();
 		
 		inventory.addProductToCart(products.get(1));

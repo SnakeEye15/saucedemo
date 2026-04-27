@@ -4,20 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+
+
+import base.BaseTest;
 
 //Build CartPage.java with locators and methods: getCartItems(), removeItemFromCart(), getCartTotal(). 
 
-public class CartPage {
+public class CartPage extends BasePage{
 	
-	private WebDriver driver;
-	
-	public CartPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
+	public CartPage() {
+		super();
     }
 	
 	@FindBy(xpath="//a[@data-test='shopping-cart-link']")
@@ -37,6 +35,7 @@ public class CartPage {
 		List<String> items=new ArrayList<>();
 		
 		for(WebElement item:cartItmensLoc) {
+			waitOn().waitForElementClickable(item);
 			items.add(item.getText());
 		}
 		
@@ -45,21 +44,24 @@ public class CartPage {
 	
 	public void removeItemFromCart(String name) {
 		String path = "//div[@class='inventory_item_name' and text()='" + name + "']/ancestor::div[@class='cart_item_label']//button";
-		driver.findElement(By.xpath(path)).click();
+		 BaseTest.getDriver().findElement(By.xpath(path)).click();
 	}
 	
 	public double getCartTotal() {
 		double cartTotal=0;
 		List<Double> cartprice=new ArrayList<>();
 		for(WebElement value:cartPriceLoc) {
+			waitOn().waitForElementClickable(value);
 			String priceText = value.getText().replace("$", "");
             cartTotal += Double.parseDouble(priceText);
 		}
 		return cartTotal;
 	}
 	
-	public void clickOnCheckOut() {
+	public CheckoutPage clickOnCheckOut() {
+		waitOn().waitForElementClickable(checkoutOption);
 		checkoutOption.click();
+		return new CheckoutPage(); // Flow: Cart -> Checkout
 	}
 
 }
